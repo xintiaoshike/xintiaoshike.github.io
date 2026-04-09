@@ -3,183 +3,355 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>一夜网</title>
+    <title>一夜网 - 忽如一夜春风来</title>
     <link rel="icon" href="./static/img/favicon.ico">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft YaHei", sans-serif;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
 
+        /* ========== 背景设置（支持静态图/动图GIF，自适应） ========== */
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            /* 替换为你的背景图地址，支持本地(./static/img/bg.gif)或网络地址，静态/GIF都可 */
+            background: url("./static/img/bg.gif") center/cover no-repeat fixed;
+            /* 不用图片可恢复渐变：background: linear-gradient(135deg, #1e3c72 0%, #2a5298 25%, #ff6b6b 50%, #feca57 75%, #48dbfb 100%); */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
             overflow-x: hidden;
+        }
+
+        /* 背景遮罩（增强毛玻璃质感，0=全透，1=全不透，可自行调整） */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            pointer-events: none;
+            z-index: -1;
         }
 
         /* 毛玻璃通用样式 */
         .glass {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* 布局容器 */
-        .container {
+        .glass:hover {
+            box-shadow: 0 12px 60px rgba(0, 0, 0, 0.35),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            transform: translateY(-5px);
+        }
+
+        /* 主容器 - 网格布局，适配新结构 */
+        .main {
+            width: 100%;
             max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            grid-template-rows: auto auto;
+            gap: 24px;
+            margin-top: 30px;
         }
 
-        /* 左侧：个人说明区 */
-        .left-box {
-            flex: 1;
-            min-width: 300px;
-            padding: 30px;
+        /* ========== 左上：个人说明区 ========== */
+        .left-profile {
+            grid-column: 1 / 2;
+            grid-row: 1 / 2;
+            padding: 40px 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            gap: 20px;
+            gap: 22px;
         }
 
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
-            background: #fff;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
-            color: #667eea;
+            font-size: 42px;
+            font-weight: bold;
+            border: 3px solid rgba(255,255,255,0.6);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .avatar::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb);
+            z-index: -1;
+            opacity: 0.8;
+            animation: avatarGlow 3s ease infinite alternate;
+        }
+
+        @keyframes avatarGlow {
+            0% { opacity: 0.6; filter: blur(5px); }
+            100% { opacity: 0.9; filter: blur(8px); }
         }
 
         .name {
-            font-size: 28px;
-            color: #2c3e50;
+            font-size: 32px;
             font-weight: bold;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ffffff 0%, #feca57 50%, #48dbfb 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .sign {
             font-size: 16px;
-            color: #7f8c8d;
-            line-height: 1.6;
+            line-height: 1.8;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
         .tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
+            margin-top: 8px;
         }
 
         .tag {
-            padding: 6px 12px;
-            background: rgba(102, 126, 234, 0.2);
-            border-radius: 20px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
             font-size: 14px;
-            color: #667eea;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
         }
 
-        /* 右侧容器 */
-        .right-box {
-            flex: 2;
-            min-width: 300px;
+        .tag:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ========== 左下：时钟（单独列框） ========== */
+        .left-time {
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
+            padding: 30px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-        }
-
-        /* 右侧上方：发展树 + 时钟 */
-        .top-card {
-            padding: 25px;
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .time {
-            font-size: 22px;
-            color: #2c3e50;
-            font-weight: 500;
+        .time-title {
+            font-size: 18px;
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+
+        .time-text {
+            font-size: 32px;
+            font-weight: 600;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+        }
+
+        /* ========== 右上：发展历程（可滚动） ========== */
+        .right-tree {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            padding: 35px;
         }
 
         .tree-title {
-            font-size: 18px;
-            color: #667eea;
-            margin-bottom: 10px;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #48dbfb 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 滚动容器：自定义最大高度，超出自动滚动 */
+        .tree-scroll-container {
+            max-height: 320px; /* 可自行调整滚动高度，比如400px */
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        /* 美化滚动条（和主题风格统一） */
+        .tree-scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .tree-scroll-container::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+        .tree-scroll-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            border-radius: 10px;
+        }
+
+        .tree-list {
+            border-left: 2px solid rgba(255,255,255,0.4);
+            padding-left: 18px;
         }
 
         .tree-item {
-            font-size: 14px;
-            color: #34495e;
-            padding-left: 10px;
-            border-left: 2px solid #667eea;
-            margin-bottom: 6px;
+            font-size: 16px;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 18px;
+            position: relative;
+            padding: 6px 0;
+            transition: all 0.3s ease;
         }
 
-        /* 右侧下方：图标传送门 */
-        .door-card {
-            padding: 25px;
+        .tree-item::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            border-radius: 50%;
+            position: absolute;
+            left: -25px;
+            top: 10px;
+            box-shadow: 0 0 10px rgba(254, 202, 87, 0.8);
+        }
+
+        .tree-item:hover {
+            transform: translateX(5px);
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+        }
+
+        /* ========== 右下：快捷传送门（可无限新增图标） ========== */
+        .right-door {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            padding: 35px;
         }
 
         .door-title {
-            font-size: 18px;
-            color: #667eea;
-            margin-bottom: 20px;
+            font-size: 24px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #48dbfb 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
         .icon-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
         }
 
-        .icon-item {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.3);
+        .icon-link {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            color: #667eea;
+            font-size: 28px;
+            color: #ffffff;
             text-decoration: none;
-            transition: 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .icon-item:hover {
-            transform: translateY(-5px);
-            background: #667eea;
-            color: #fff;
+        .icon-link:hover {
+            transform: translateY(-8px) scale(1.05);
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: #ffffff;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
-        /* 底部 */
+        /* 底部版权 */
         footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #7f8c8d;
+            grid-column: 1 / 3;
+            margin-top: 20px;
+            color: rgba(255,255,255,0.8);
             font-size: 14px;
+            text-align: center;
+            padding-bottom: 20px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* ========== 手机端适配 ========== */
+        @media (max-width: 768px) {
+            .main {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto auto;
+            }
+            .left-profile, .left-time, .right-tree, .right-door {
+                grid-column: 1 / 2;
+            }
+            .left-time { grid-row: 2 / 3; }
+            .right-tree { grid-row: 3 / 4; }
+            .right-door { grid-row: 4 / 5; }
+            footer { grid-column: 1 / 2; }
+            .icon-group { justify-content: center; }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <!-- 左侧：个人说明区 -->
-        <div class="left-box glass">
+    <div class="main">
+        <!-- 左上：个人说明 -->
+        <div class="left-profile glass">
             <div class="avatar">一夜</div>
             <div class="name">一夜网</div>
             <div class="sign">忽如一夜春风来<br>千树万树梨花开</div>
@@ -187,54 +359,64 @@
                 <span class="tag">个人主页</span>
                 <span class="tag">文字爱好者</span>
                 <span class="tag">极简生活</span>
+                <span class="tag">独立开发者</span>
             </div>
         </div>
 
-        <!-- 右侧 -->
-        <div class="right-box">
-            <!-- 右侧上方：发展树 + 时钟 -->
-            <div class="top-card glass">
-                <div class="tree-box">
-                    <div class="tree-title">📈 发展历程</div>
-                    <div class="tree-item">2026 - 创建个人主页</div>
-                    <div class="tree-item">2026 - 绑定独立域名</div>
-                    <div class="tree-item">2026 - 持续更新</div>
-                </div>
-                <div class="time" id="beijing-time">加载中...</div>
-            </div>
+        <!-- 左下：时钟（单独列框） -->
+        <div class="left-time glass">
+            <div class="time-title">北京时间</div>
+            <div class="time-text" id="time">00:00:00</div>
+        </div>
 
-            <!-- 右侧下方：图标传送门 -->
-            <div class="door-card glass">
-                <div class="door-title">🚪 快捷传送门</div>
-                <div class="icon-group">
-                    <a href="https://github.com/xintiaoshike" class="icon-item">G</a>
-                    <a href="mailto:zyu7596@gmail.com" class="icon-item">@</a>
+        <!-- 右上：发展历程（可滚动） -->
+        <div class="right-tree glass">
+            <div class="tree-title">📈 发展历程</div>
+            <div class="tree-scroll-container">
+                <div class="tree-list">
+                    <div class="tree-item">2026 年 | 创建个人专属主页</div>
+                    <div class="tree-item">2026 年 | 绑定独立域名 bw666.cc</div>
+                    <div class="tree-item">2026 年 | 完成毛玻璃风格重构</div>
+                    <div class="tree-item">2026 年 | 新增滚动历程树功能</div>
+                    <div class="tree-item">2026 年 | 时钟移至左下角独立卡片</div>
+                    <div class="tree-item">2026 年 | 支持自定义背景图/动图</div>
+                    <div class="tree-item">2026 年 | 无限新增快捷传送图标</div>
+                    <div class="tree-item">持续更新中...</div>
                 </div>
             </div>
         </div>
+
+        <!-- 右下：快捷传送门（可新增多个图标） -->
+        <div class="right-door glass">
+            <div class="door-title">🚪 快捷传送</div>
+            <div class="icon-group">
+                <!-- 复制此a标签即可新增图标，修改href和图标文字 -->
+                <a href="https://github.com/xintiaoshike" class="icon-link">G</a>
+                <a href="mailto:zyu7596@gmail.com" class="icon-link">@</a>
+                <a href="https://blog.bw666.cc" class="icon-link">B</a>
+                <a href="https://space.bilibili.com" class="icon-link">🎬</a>
+                <a href="javascript:void(0)" class="icon-link">💬</a>
+                <a href="javascript:void(0)" class="icon-link">📸</a>
+            </div>
+        </div>
+
+        <!-- 底部版权 -->
+        <footer>
+            一夜网 © 2026 | 忽如一夜春风来，千树万树梨花开
+        </footer>
     </div>
 
-    <footer>
-        一夜网 © 2026 | 简洁毛玻璃主页
-    </footer>
-
-    <!-- 北京时间实时时钟 -->
+    <!-- 实时北京时间 -->
     <script>
-        function updateTime() {
-            const now = new Date();
-            const options = {
-                timeZone: 'Asia/Shanghai',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            };
-            document.getElementById('beijing-time').innerText = new Intl.DateTimeFormat('zh-CN', options).format(now);
+        function getTime() {
+            let date = new Date();
+            let hours = String(date.getHours()).padStart(2, '0');
+            let minutes = String(date.getMinutes()).padStart(2, '0');
+            let seconds = String(date.getSeconds()).padStart(2, '0');
+            document.getElementById('time').innerText = `${hours}:${minutes}:${seconds}`;
         }
-        setInterval(updateTime, 1000);
-        updateTime();
+        setInterval(getTime, 1000);
+        getTime();
     </script>
 </body>
 </html>
