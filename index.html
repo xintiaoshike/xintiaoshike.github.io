@@ -410,12 +410,105 @@
         <div class="door-title">🚪 快捷传送</div>
         <div class="icon-group">
             <div class="icon-group">
-    <a href="https://t.me/yiyewan" class="icon-link">联系管理员</a>       <!-- TG用户名 → 文字TG -->
-    <a href="https://www.6676.com" class="icon-link">6676商城</a>       <!-- 6676商城 → 文字6676 -->
-    <a href="https://baiduAPP.cc" class="icon-link">万象资源</a>        <!-- 百度 → 文字百度 -->
-    <a href="javascript:void(0)" class="icon-link">收藏</a>          <!-- 收藏 → 文字收藏 -->
-    <a href="https://t.me/wxfp_bot" class="icon-link">一夜资源分发</a> <!-- 机器人1 → 文字Bot1 -->
-    <a href="https://t.me/yiyehutui_bot" class="icon-link">一夜网互推</a> <!-- 机器人2 → 文字Bot2 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一夜网 - 忽如一夜春风来</title>
+    <link rel="icon" href="./static/img/favicon.ico">
+    <style>
+        /* 保留原有所有样式，仅修改/新增以下部分 */
+        
+        /* ✅ 核心修改：重新定义传送门样式，支持图标+文字 */
+        .icon-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(15px, 3vw, 25px); /* 增大间距，避免挤在一起 */
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        /* ✅ 图标+文字的容器样式 */
+        .icon-link {
+            width: clamp(80px, 10vw, 120px); /* 加宽容器，适配文字 */
+            height: clamp(80px, 10vw, 120px); /* 加高容器，适配文字 */
+            border-radius: clamp(12px, 2vw, 16px);
+            background: rgba(255, 255, 255, 0.15);
+            display: flex;
+            /* 关键：垂直排列图标+文字 */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            /* 文字换行+居中 */
+            text-align: center;
+            padding: 5px;
+        }
+
+        /* ✅ 图标样式 */
+        .icon-link .icon {
+            font-size: clamp(24px, 6vw, 36px); /* 图标字号 */
+            margin-bottom: 5px; /* 图标和文字间距 */
+        }
+
+        /* ✅ 文字说明样式 */
+        .icon-link .text {
+            font-size: clamp(12px, 2vw, 14px); /* 文字字号 */
+            line-height: 1.2; /* 行高，避免文字重叠 */
+        }
+
+        .icon-link:hover {
+            transform: translateY(-8px) scale(1.05);
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: #ffffff;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* 其他原有样式不变 */
+    </style>
+</head>
+<body>
+<!-- 其他代码不变，仅修改传送门区域 -->
+<div class="right-door glass">
+    <div class="door-title">🚪 快捷传送</div>
+    <div class="icon-group">
+        <!-- 格式：图标+文字说明 -->
+        <a href="https://t.me/你的TG用户名" class="icon-link">
+            <span class="icon">📱</span>
+            <span class="text">联系管理员</span>
+        </a>
+        <a href="https://www.6676.com" class="icon-link">
+            <span class="icon">🛒</span>
+            <span class="text">6676商城</span>
+        </a>
+        <a href="https://baiduAPP.com" class="icon-link">
+            <span class="icon">🔍</span>
+            <span class="text">万象资源</span>
+        </a>
+        <a href="javascript:void(0)" class="icon-link">
+            <span class="icon">⭐</span>
+            <span class="text">收藏</span>
+        </a>
+        <a href="https://t.me/机器人1用户名_bot" class="icon-link">
+            <span class="icon">🤖</span>
+            <span class="text">一夜资源分发</span>
+        </a>
+        <a href="https://t.me/机器人2用户名_bot" class="icon-link">
+            <span class="icon">🤖</span>
+            <span class="text">一夜网互推</span>
+        </a>
+    </div>
+</div>
+<!-- 其他代码不变 -->
+</body>
+</html>
 </div>
         </div>
     </div>
