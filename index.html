@@ -378,17 +378,16 @@
 </head>
 
 <body>
-    <!-- 修复1：闭合音频标签（原代码未闭合导致DOM结构错误） -->
     <!-- 1. 点击音效 -->
     <audio id="clickAudio" preload="auto">
         <source src="./static/audio/click.mp3" type="audio/mpeg">
-    </audio>
+    
     <!-- 2. 背景音乐 -->
     <audio id="bgMusic" loop preload="auto">
         <source src="./static/audio/bg.mp3" type="audio/mpeg">
-    </audio>
+    
 
-    <!-- 右上角音乐控制按钮（修复样式和交互） -->
+    <!-- 右上角音乐控制按钮 -->
     <div class="music-btn glass" id="musicBtn">
         <svg t="1718000000000" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="70%" height="70%">
             <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z" fill="#ffffff"></path>
@@ -397,13 +396,13 @@
         </svg>
     </div>
 
-    <!-- 视频背景（保持你的原有路径） -->
+    <!-- 视频背景 -->
     <div class="video-bg">
         <video src="./static/img/nafuditi.mp4" autoplay muted loop playsinline></video>
     </div>
 
     <div class="main">
-        <!-- 左上：个人说明（保持不变） -->
+        <!-- 左上：个人说明 -->
         <div class="left-profile glass">
             <div class="avatar">一夜</div>
             <div class="name">一夜网</div>
@@ -416,13 +415,13 @@
             </div>
         </div>
 
-        <!-- 左下：时钟（保持不变） -->
+        <!-- 左下：时钟 -->
         <div class="left-time glass">
             <div class="time-title">北京时间</div>
             <div class="time-text" id="time">00:00:00</div>
         </div>
 
-        <!-- 右上：发展历程（保持不变） -->
+        <!-- 右上：发展历程 -->
         <div class="right-tree glass">
             <div class="tree-title">📈 发展历程</div>
             <div class="tree-scroll-container">
@@ -439,28 +438,27 @@
             </div>
         </div>
 
-        <!-- 右下：快捷传送门（修复点击音效绑定） -->
+        <!-- 右下：快捷传送门（✅ 移除了单独的onclick，避免重复播放） -->
         <div class="right-door glass">
             <div class="door-title">🚪 快捷传送</div>
             <div class="icon-group">
-                <a href="https://github.com/xintiaoshike" class="icon-link" onclick="playClick()">G</a>
-                <a href="mailto:zyu7596@gmail.com" class="icon-link" onclick="playClick()">@</a>
-                <a href="https://blog.bw666.cc" class="icon-link" onclick="playClick()">B</a>
-                <a href="https://space.bilibili.com" class="icon-link" onclick="playClick()">🎬</a>
-                <a href="javascript:void(0)" class="icon-link" onclick="playClick()">💬</a>
-                <a href="javascript:void(0)" class="icon-link" onclick="playClick()">📸</a>
+                <a href="https://github.com/xintiaoshike" class="icon-link">G</a>
+                <a href="mailto:zyu7596@gmail.com" class="icon-link">@</a>
+                <a href="https://blog.bw666.cc" class="icon-link">B</a>
+                <a href="https://space.bilibili.com" class="icon-link">🎬</a>
+                <a href="javascript:void(0)" class="icon-link">💬</a>
+                <a href="javascript:void(0)" class="icon-link">📸</a>
             </div>
         </div>
 
-        <!-- 底部版权（保持不变） -->
+        <!-- 底部版权 -->
         <footer>
             一夜网 © 2026 | 忽如一夜春风来，千树万树梨花开
         </footer>
     </div>
 
-    <!-- 核心JS：修复所有音效逻辑 + 保留时钟功能 -->
+    <!-- 核心JS：全局点击音效+原有功能完整保留 -->
     <script>
-        // 修复2：全局变量提前声明，避免未定义错误
         let isMusicPlaying = false;
         const clickAudio = document.getElementById('clickAudio');
         const bgMusic = document.getElementById('bgMusic');
@@ -468,7 +466,7 @@
         const iconPlay = document.getElementById('musicIconPlay');
         const iconPause = document.getElementById('musicIconPause');
 
-        // 1. 点击音效播放函数（修复音量和兼容性）
+        // 1. 点击音效播放函数（保留原有逻辑：音量、重置时间、兼容性）
         function playClick() {
             try {
                 clickAudio.volume = 0.5; // 音量50%，可自行调整
@@ -479,7 +477,10 @@
             }
         }
 
-        // 2. 背景音乐开关控制（修复点击事件绑定和状态切换）
+        // ✅ 新增：全局点击事件（捕获阶段，点击任何位置都先播放音效）
+        document.addEventListener('click', playClick, true);
+
+        // 2. 背景音乐开关控制（保留原有逻辑）
         function toggleMusic() {
             try {
                 if (isMusicPlaying) {
@@ -499,10 +500,10 @@
             }
         }
 
-        // 修复3：绑定音乐按钮点击事件（原代码未绑定）
+        // 绑定音乐按钮点击事件
         musicBtn.addEventListener('click', toggleMusic);
 
-        // 3. 实时北京时间（保持原有功能不变）
+        // 3. 实时北京时间（保留原有功能）
         function getTime() {
             let date = new Date();
             let hours = String(date.getHours()).padStart(2, '0');
@@ -513,12 +514,11 @@
         setInterval(getTime, 1000);
         getTime();
 
-        // 修复4：页面点击激活音频上下文（解决浏览器自动播放限制）
+        // 4. 页面点击激活音频上下文（解决浏览器自动播放限制，保留原有逻辑）
         document.body.addEventListener('click', function() {
-            // 激活音频上下文，后续播放更顺畅
             if (clickAudio.paused) clickAudio.load();
             if (bgMusic.paused) bgMusic.load();
-        }, { once: true }); // 只执行一次，避免重复触发
+        }, { once: true });
     </script>
 </body>
 </html>
