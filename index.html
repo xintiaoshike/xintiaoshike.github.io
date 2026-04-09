@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一夜网</title>
+    <link rel="icon" href="./static/img/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* 毛玻璃通用样式 */
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* 左侧：个人说明区 */
+        .left-box {
+            flex: 1;
+            min-width: 300px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #667eea;
+        }
+
+        .name {
+            font-size: 28px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .sign {
+            font-size: 16px;
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .tag {
+            padding: 6px 12px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 20px;
+            font-size: 14px;
+            color: #667eea;
+        }
+
+        /* 右侧容器 */
+        .right-box {
+            flex: 2;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 右侧上方：发展树 + 时钟 */
+        .top-card {
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .time {
+            font-size: 22px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .tree-title {
+            font-size: 18px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .tree-item {
+            font-size: 14px;
+            color: #34495e;
+            padding-left: 10px;
+            border-left: 2px solid #667eea;
+            margin-bottom: 6px;
+        }
+
+        /* 右侧下方：图标传送门 */
+        .door-card {
+            padding: 25px;
+        }
+
+        .door-title {
+            font-size: 18px;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .icon-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .icon-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #667eea;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .icon-item:hover {
+            transform: translateY(-5px);
+            background: #667eea;
+            color: #fff;
+        }
+
+        /* 底部 */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 左侧：个人说明区 -->
+        <div class="left-box glass">
+            <div class="avatar">一夜</div>
+            <div class="name">一夜网</div>
+            <div class="sign">忽如一夜春风来<br>千树万树梨花开</div>
+            <div class="tags">
+                <span class="tag">个人主页</span>
+                <span class="tag">文字爱好者</span>
+                <span class="tag">极简生活</span>
+            </div>
+        </div>
+
+        <!-- 右侧 -->
+        <div class="right-box">
+            <!-- 右侧上方：发展树 + 时钟 -->
+            <div class="top-card glass">
+                <div class="tree-box">
+                    <div class="tree-title">📈 发展历程</div>
+                    <div class="tree-item">2026 - 创建个人主页</div>
+                    <div class="tree-item">2026 - 绑定独立域名</div>
+                    <div class="tree-item">2026 - 持续更新</div>
+                </div>
+                <div class="time" id="beijing-time">加载中...</div>
+            </div>
+
+            <!-- 右侧下方：图标传送门 -->
+            <div class="door-card glass">
+                <div class="door-title">🚪 快捷传送门</div>
+                <div class="icon-group">
+                    <a href="https://github.com/xintiaoshike" class="icon-item">G</a>
+                    <a href="mailto:zyu7596@gmail.com" class="icon-item">@</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        一夜网 © 2026 | 简洁毛玻璃主页
+    </footer>
+
+    <!-- 北京时间实时时钟 -->
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const options = {
+                timeZone: 'Asia/Shanghai',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('beijing-time').innerText = new Intl.DateTimeFormat('zh-CN', options).format(now);
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
