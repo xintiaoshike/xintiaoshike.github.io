@@ -26,7 +26,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* 彻底隐藏视频所有原生控件 */
             pointer-events: none;
             user-select: none;
         }
@@ -52,8 +51,6 @@
             position: relative;
             overflow-x: hidden;
         }
-
-        /* ✅ 核心修改1：完全删除音乐按钮样式（不再需要） */
 
         .glass {
             background: rgba(255, 255, 255, 0.12);
@@ -289,29 +286,45 @@
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
+        /* ✅ 核心修改1：调整容器间距和尺寸，适配小图标 */
         .icon-group {
             display: flex;
             flex-wrap: wrap;
-            gap: clamp(12px, 3vw, 20px);
+            gap: clamp(15px, 3vw, 25px);
             justify-content: flex-start;
             align-items: center;
         }
 
+        /* ✅ 核心修改2：图标+文字容器样式 */
         .icon-link {
-            width: clamp(50px, 8vw, 80px);
-            height: clamp(50px, 8vw, 80px);
+            width: clamp(70px, 8vw, 100px);
+            height: clamp(70px, 8vw, 100px);
             border-radius: clamp(12px, 2vw, 16px);
             background: rgba(255, 255, 255, 0.15);
             display: flex;
+            flex-direction: column; /* 垂直排列：图标上，文字下 */
             align-items: center;
             justify-content: center;
-            font-size: clamp(20px, 5vw, 32px);
             color: #ffffff;
             text-decoration: none;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
+            text-align: center;
+            padding: 5px;
+        }
+
+        /* ✅ 核心修改3：图标缩小一半（原尺寸/2） */
+        .icon-link .icon {
+            font-size: clamp(12px, 3vw, 18px); /* 原24-36px → 现12-18px，缩小一半 */
+            margin-bottom: 5px;
+        }
+
+        /* ✅ 文字说明样式 */
+        .icon-link .text {
+            font-size: clamp(12px, 2vw, 14px);
+            line-height: 1.2;
         }
 
         .icon-link:hover {
@@ -336,8 +349,6 @@
             color: transparent;
         }
 
-        /* ✅ 核心修改2：移除全局媒体控件样式（已不需要） */
-
         @media (max-width: 768px) {
             .main {
                 grid-template-columns: 1fr;
@@ -356,16 +367,12 @@
 </head>
 <body>
 
-<!-- ✅ 保留点击音效，移除音乐按钮相关逻辑 -->
 <audio id="clickAudio" preload="auto">
     <source src="./static/audio/click.mp3" type="audio/mpeg">
 </audio>
-<!-- ✅ 背景音乐自动播放，无需手动控制 -->
 <audio id="bgMusic" loop preload="auto" autoplay>
     <source src="./static/audio/bg.mp3" type="audio/mpeg">
 </audio>
-
-<!-- ✅ 核心修改3：完全删除音乐按钮的HTML代码 -->
 
 <div class="video-bg">
     <video src="./static/img/nafuditi.mp4" autoplay muted loop playsinline></video>
@@ -409,107 +416,32 @@
     <div class="right-door glass">
         <div class="door-title">🚪 快捷传送</div>
         <div class="icon-group">
-            <div class="icon-group">
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>一夜网 - 忽如一夜春风来</title>
-    <link rel="icon" href="./static/img/favicon.ico">
-    <style>
-        /* 保留原有所有样式，仅修改/新增以下部分 */
-        
-        /* ✅ 核心修改：重新定义传送门样式，支持图标+文字 */
-        .icon-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: clamp(15px, 3vw, 25px); /* 增大间距，避免挤在一起 */
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-        /* ✅ 图标+文字的容器样式 */
-        .icon-link {
-            width: clamp(80px, 10vw, 120px); /* 加宽容器，适配文字 */
-            height: clamp(80px, 10vw, 120px); /* 加高容器，适配文字 */
-            border-radius: clamp(12px, 2vw, 16px);
-            background: rgba(255, 255, 255, 0.15);
-            display: flex;
-            /* 关键：垂直排列图标+文字 */
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-            /* 文字换行+居中 */
-            text-align: center;
-            padding: 5px;
-        }
-
-        /* ✅ 图标样式 */
-        .icon-link .icon {
-            font-size: clamp(24px, 6vw, 36px); /* 图标字号 */
-            margin-bottom: 5px; /* 图标和文字间距 */
-        }
-
-        /* ✅ 文字说明样式 */
-        .icon-link .text {
-            font-size: clamp(12px, 2vw, 14px); /* 文字字号 */
-            line-height: 1.2; /* 行高，避免文字重叠 */
-        }
-
-        .icon-link:hover {
-            transform: translateY(-8px) scale(1.05);
-            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
-            color: #ffffff;
-            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* 其他原有样式不变 */
-    </style>
-</head>
-<body>
-<!-- 其他代码不变，仅修改传送门区域 -->
-<div class="right-door glass">
-    <div class="door-title">🚪 快捷传送</div>
-    <div class="icon-group">
-        <!-- 格式：图标+文字说明 -->
-        <a href="https://t.me/你的TG用户名" class="icon-link">
-            <span class="icon">📱</span>
-            <span class="text">联系管理员</span>
-        </a>
-        <a href="https://www.6676.com" class="icon-link">
-            <span class="icon">🛒</span>
-            <span class="text">6676商城</span>
-        </a>
-        <a href="https://baiduAPP.com" class="icon-link">
-            <span class="icon">🔍</span>
-            <span class="text">万象资源</span>
-        </a>
-        <a href="javascript:void(0)" class="icon-link">
-            <span class="icon">⭐</span>
-            <span class="text">收藏</span>
-        </a>
-        <a href="https://t.me/机器人1用户名_bot" class="icon-link">
-            <span class="icon">🤖</span>
-            <span class="text">一夜资源分发</span>
-        </a>
-        <a href="https://t.me/机器人2用户名_bot" class="icon-link">
-            <span class="icon">🤖</span>
-            <span class="text">一夜网互推</span>
-        </a>
-    </div>
-</div>
-<!-- 其他代码不变 -->
-</body>
-</html>
-</div>
+            <!-- ✅ 核心修改4：TG替换为纸飞机图标 🛩️ -->
+            <a href="https://t.me/yiyewan" class="icon-link">
+                <span class="icon">🛩️</span>
+                <span class="text">联系管理员</span>
+            </a>
+            <a href="https://www.6676.com" class="icon-link">
+                <span class="icon">🛒</span>
+                <span class="text">6676商城</span>
+            </a>
+            <a href="https://baiduAPP.cc" class="icon-link">
+                <span class="icon">🔍</span>
+                <span class="text">万象资源</span>
+            </a>
+            <a href="javascript:void(0)" class="icon-link">
+                <span class="icon">⭐</span>
+                <span class="text">收藏</span>
+            </a>
+            <!-- ✅ TG机器人也用纸飞机图标 -->
+            <a href="https://t.me/yiyehutui_bot" class="icon-link">
+                <span class="icon">🛩️</span>
+                <span class="text">一夜网互推</span>
+            </a>
+            <a href="https://t.me/yiye_guanggao" class="icon-link">
+                <span class="icon">🛩️</span>
+                <span class="text">一夜网商务</span>
+            </a>
         </div>
     </div>
 
@@ -522,7 +454,6 @@
     const clickAudio = document.getElementById('clickAudio');
     const bgMusic = document.getElementById('bgMusic');
 
-    // ✅ 保留全局点击音效
     document.addEventListener('click', function(e) {
         try {
             clickAudio.volume = 0.5;
@@ -531,7 +462,6 @@
         } catch (e) {}
     });
 
-    // ✅ 时钟功能
     function updateTime() {
         const d = new Date();
         const h = String(d.getHours()).padStart(2, '0');
@@ -542,9 +472,7 @@
     setInterval(updateTime, 1000);
     updateTime();
 
-    // ✅ 页面加载后自动播放背景音乐（兼容浏览器权限）
     window.onload = function() {
-        // 激活音频上下文
         document.addEventListener('click', function() {
             try {
                 bgMusic.volume = 0.3;
