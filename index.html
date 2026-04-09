@@ -13,7 +13,6 @@
             font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
 
-        /* 视频背景容器 */
         .video-bg {
             position: fixed;
             top: 0;
@@ -26,10 +25,9 @@
         .video-bg video {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* 视频自动铺满全屏，不变形 */
+            object-fit: cover;
         }
 
-        /* 背景遮罩（增强毛玻璃质感） */
         body::before {
             content: '';
             position: fixed;
@@ -52,7 +50,6 @@
             overflow-x: hidden;
         }
 
-        /* 右上角音乐控制按钮（毛玻璃风格） */
         .music-btn {
             position: fixed;
             top: 20px;
@@ -66,7 +63,6 @@
             justify-content: center;
         }
 
-        /* 毛玻璃通用样式 */
         .glass {
             background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(25px);
@@ -86,7 +82,6 @@
             transform: translateY(-5px);
         }
 
-        /* 主容器 - 网格布局 */
         .main {
             width: 100%;
             max-width: 1200px;
@@ -97,7 +92,6 @@
             margin-top: 30px;
         }
 
-        /* 左上：个人说明区 */
         .left-profile {
             grid-column: 1 / 2;
             grid-row: 1 / 2;
@@ -189,7 +183,6 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* 左下：时钟 */
         .left-time {
             grid-column: 1 / 2;
             grid-row: 2 / 3;
@@ -214,7 +207,6 @@
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
         }
 
-        /* 右上：发展历程 */
         .right-tree {
             grid-column: 2 / 3;
             grid-row: 1 / 2;
@@ -285,7 +277,6 @@
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
         }
 
-        /* 右下：快捷传送门（自适应图标） */
         .right-door {
             grid-column: 2 / 3;
             grid-row: 2 / 3;
@@ -353,7 +344,6 @@
             color: transparent;
         }
 
-        /* 手机端适配 */
         @media (max-width: 768px) {
             .main {
                 grid-template-columns: 1fr;
@@ -376,149 +366,135 @@
         }
     </style>
 </head>
-
 <body>
-    <!-- 1. 点击音效 -->
-    <audio id="clickAudio" preload="auto">
-        <source src="./static/audio/click.mp3" type="audio/mpeg">
-    
-    <!-- 2. 背景音乐 -->
-    <audio id="bgMusic" loop preload="auto">
-        <source src="./static/audio/bg.mp3" type="audio/mpeg">
-    
 
-    <!-- 右上角音乐控制按钮 -->
-    <div class="music-btn glass" id="musicBtn">
-        <svg t="1718000000000" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="70%" height="70%">
-            <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z" fill="#ffffff"></path>
-            <path d="M416 320l256-96v576l-256-96z" fill="#ffffff" id="musicIconPlay"></path>
-            <path d="M384 384h64v256h-64zM576 384h64v256h-64z" fill="#ffffff" id="musicIconPause" style="display: none;"></path>
-        </svg>
+<audio id="clickAudio" preload="auto">
+    <source src="./static/audio/click.mp3" type="audio/mpeg">
+
+
+<audio id="bgMusic" loop preload="auto">
+    <source src="./static/audio/bg.mp3" type="audio/mpeg">
+
+
+<div class="music-btn glass" id="musicBtn">
+    <svg viewBox="0 0 1024 1024" width="70%" height="70%" fill="#ffffff">
+        <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path>
+        <path d="M416 320l256-96v576l-256-96z" id="musicIconPlay"></path>
+        <path d="M384 384h64v256h-64zM576 384h64v256h-64z" id="musicIconPause" style="display:none"></path>
+    </svg>
+</div>
+
+<div class="video-bg">
+    <video src="./static/img/nafuditi.mp4" autoplay muted loop playsinline></video>
+</div>
+
+<div class="main">
+    <div class="left-profile glass">
+        <div class="avatar">一夜</div>
+        <div class="name">一夜网</div>
+        <div class="sign">忽如一夜春风来<br>千树万树梨花开</div>
+        <div class="tags">
+            <span class="tag">个人主页</span>
+            <span class="tag">文字爱好者</span>
+            <span class="tag">极简生活</span>
+            <span class="tag">独立开发者</span>
+        </div>
     </div>
 
-    <!-- 视频背景 -->
-    <div class="video-bg">
-        <video src="./static/img/nafuditi.mp4" autoplay muted loop playsinline></video>
+    <div class="left-time glass">
+        <div class="time-title">北京时间</div>
+        <div class="time-text" id="time">00:00:00</div>
     </div>
 
-    <div class="main">
-        <!-- 左上：个人说明 -->
-        <div class="left-profile glass">
-            <div class="avatar">一夜</div>
-            <div class="name">一夜网</div>
-            <div class="sign">忽如一夜春风来<br>千树万树梨花开</div>
-            <div class="tags">
-                <span class="tag">个人主页</span>
-                <span class="tag">文字爱好者</span>
-                <span class="tag">极简生活</span>
-                <span class="tag">独立开发者</span>
+    <div class="right-tree glass">
+        <div class="tree-title">📈 发展历程</div>
+        <div class="tree-scroll-container">
+            <div class="tree-list">
+                <div class="tree-item">2026 年 | 创建个人专属主页</div>
+                <div class="tree-item">2026 年 | 绑定独立域名 bw666.cc</div>
+                <div class="tree-item">2026 年 | 完成毛玻璃风格重构</div>
+                <div class="tree-item">2026 年 | 新增滚动历程树功能</div>
+                <div class="tree-item">2026 年 | 时钟移至左下角独立卡片</div>
+                <div class="tree-item">2026 年 | 支持视频动态背景</div>
+                <div class="tree-item">2026 年 | 新增点击音效+背景音乐</div>
+                <div class="tree-item">持续更新中...</div>
             </div>
         </div>
-
-        <!-- 左下：时钟 -->
-        <div class="left-time glass">
-            <div class="time-title">北京时间</div>
-            <div class="time-text" id="time">00:00:00</div>
-        </div>
-
-        <!-- 右上：发展历程 -->
-        <div class="right-tree glass">
-            <div class="tree-title">📈 发展历程</div>
-            <div class="tree-scroll-container">
-                <div class="tree-list">
-                    <div class="tree-item">2026 年 | 创建个人专属主页</div>
-                    <div class="tree-item">2026 年 | 绑定独立域名 bw666.cc</div>
-                    <div class="tree-item">2026 年 | 完成毛玻璃风格重构</div>
-                    <div class="tree-item">2026 年 | 新增滚动历程树功能</div>
-                    <div class="tree-item">2026 年 | 时钟移至左下角独立卡片</div>
-                    <div class="tree-item">2026 年 | 支持视频动态背景</div>
-                    <div class="tree-item">2026 年 | 新增点击音效+背景音乐</div>
-                    <div class="tree-item">持续更新中...</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 右下：快捷传送门（✅ 移除了单独的onclick，避免重复播放） -->
-        <div class="right-door glass">
-            <div class="door-title">🚪 快捷传送</div>
-            <div class="icon-group">
-                <a href="https://github.com/xintiaoshike" class="icon-link">G</a>
-                <a href="mailto:zyu7596@gmail.com" class="icon-link">@</a>
-                <a href="https://blog.bw666.cc" class="icon-link">B</a>
-                <a href="https://space.bilibili.com" class="icon-link">🎬</a>
-                <a href="javascript:void(0)" class="icon-link">💬</a>
-                <a href="javascript:void(0)" class="icon-link">📸</a>
-            </div>
-        </div>
-
-        <!-- 底部版权 -->
-        <footer>
-            一夜网 © 2026 | 忽如一夜春风来，千树万树梨花开
-        </footer>
     </div>
 
-    <!-- 核心JS：全局点击音效+原有功能完整保留 -->
-    <script>
-        let isMusicPlaying = false;
-        const clickAudio = document.getElementById('clickAudio');
-        const bgMusic = document.getElementById('bgMusic');
-        const musicBtn = document.getElementById('musicBtn');
-        const iconPlay = document.getElementById('musicIconPlay');
-        const iconPause = document.getElementById('musicIconPause');
+    <div class="right-door glass">
+        <div class="door-title">🚪 快捷传送</div>
+        <div class="icon-group">
+            <a href="https://github.com/xintiaoshike" class="icon-link">G</a>
+            <a href="mailto:zyu7596@gmail.com" class="icon-link">@</a>
+            <a href="https://blog.bw666.cc" class="icon-link">B</a>
+            <a href="https://space.bilibili.com" class="icon-link">🎬</a>
+            <a href="javascript:void(0)" class="icon-link">💬</a>
+            <a href="javascript:void(0)" class="icon-link">📸</a>
+        </div>
+    </div>
 
-        // 1. 点击音效播放函数（保留原有逻辑：音量、重置时间、兼容性）
-        function playClick() {
-            try {
-                clickAudio.volume = 0.5; // 音量50%，可自行调整
-                clickAudio.currentTime = 0; // 每次点击从头播放
-                clickAudio.play();
-            } catch (err) {
-                console.log('点击音效播放提示：', '需先点击页面任意位置激活音频');
+    <footer>
+        一夜网 © 2026 | 忽如一夜春风来，千树万树梨花开
+    </footer>
+</div>
+
+<script>
+    let isMusicPlaying = false;
+    const clickAudio = document.getElementById('clickAudio');
+    const bgMusic = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    const iconPlay = document.getElementById('musicIconPlay');
+    const iconPause = document.getElementById('musicIconPause');
+
+    // 全局点击播放音效
+    document.addEventListener('click', function(e) {
+        // 点击音乐按钮不播放点击音效
+        if (musicBtn.contains(e.target)) return;
+        
+        try {
+            clickAudio.volume = 0.5;
+            clickAudio.currentTime = 0;
+            clickAudio.play();
+        } catch (e) {}
+    });
+
+    // 背景音乐开关
+    musicBtn.onclick = function() {
+        try {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                iconPlay.style.display = 'block';
+                iconPause.style.display = 'none';
+            } else {
+                bgMusic.volume = 0.3;
+                bgMusic.play();
+                isMusicPlaying = true;
+                iconPlay.style.display = 'none';
+                iconPause.style.display = 'block';
             }
+        } catch(e) {
+            alert('请先点击页面激活音频');
         }
+    };
 
-        // ✅ 新增：全局点击事件（捕获阶段，点击任何位置都先播放音效）
-        document.addEventListener('click', playClick, true);
+    // 时钟
+    function updateTime() {
+        const d = new Date();
+        const h = String(d.getHours()).padStart(2, '0');
+        const m = String(d.getMinutes()).padStart(2, '0');
+        const s = String(d.getSeconds()).padStart(2, '0');
+        document.getElementById('time').textContent = `${h}:${m}:${s}`;
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
 
-        // 2. 背景音乐开关控制（保留原有逻辑）
-        function toggleMusic() {
-            try {
-                if (isMusicPlaying) {
-                    bgMusic.pause();
-                    isMusicPlaying = false;
-                    iconPlay.style.display = 'block';
-                    iconPause.style.display = 'none';
-                } else {
-                    bgMusic.volume = 0.3; // 背景音乐音量30%
-                    bgMusic.play();
-                    isMusicPlaying = true;
-                    iconPlay.style.display = 'none';
-                    iconPause.style.display = 'block';
-                }
-            } catch (err) {
-                alert('请先点击页面任意位置，再开启背景音乐（浏览器安全限制）');
-            }
-        }
-
-        // 绑定音乐按钮点击事件
-        musicBtn.addEventListener('click', toggleMusic);
-
-        // 3. 实时北京时间（保留原有功能）
-        function getTime() {
-            let date = new Date();
-            let hours = String(date.getHours()).padStart(2, '0');
-            let minutes = String(date.getMinutes()).padStart(2, '0');
-            let seconds = String(date.getSeconds()).padStart(2, '0');
-            document.getElementById('time').innerText = `${hours}:${minutes}:${seconds}`;
-        }
-        setInterval(getTime, 1000);
-        getTime();
-
-        // 4. 页面点击激活音频上下文（解决浏览器自动播放限制，保留原有逻辑）
-        document.body.addEventListener('click', function() {
-            if (clickAudio.paused) clickAudio.load();
-            if (bgMusic.paused) bgMusic.load();
-        }, { once: true });
-    </script>
+    // 激活音频
+    document.addEventListener('click', function() {
+        clickAudio.load();
+        bgMusic.load();
+    }, { once: true });
+</script>
 </body>
 </html>
