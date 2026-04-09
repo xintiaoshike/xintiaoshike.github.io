@@ -26,18 +26,9 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* ✅ 核心修改1：隐藏视频自带的音量控制按钮 */
-            volume: hidden;
-            /* 兼容不同浏览器的视频控件隐藏 */
-            ::-webkit-media-controls-volume-slider {
-                display: none !important;
-            }
-            ::-webkit-media-controls-mute-button {
-                display: none !important;
-            }
-            ::-webkit-media-controls {
-                display: none !important;
-            }
+            /* 彻底隐藏视频所有原生控件 */
+            pointer-events: none;
+            user-select: none;
         }
 
         body::before {
@@ -62,18 +53,7 @@
             overflow-x: hidden;
         }
 
-        .music-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            z-index: 999;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        /* ✅ 核心修改1：完全删除音乐按钮样式（不再需要） */
 
         .glass {
             background: rgba(255, 255, 255, 0.12);
@@ -356,15 +336,7 @@
             color: transparent;
         }
 
-        /* ✅ 核心修改2：全局隐藏所有媒体控件（兜底方案） */
-        audio, video {
-            -webkit-appearance: none;
-            appearance: none;
-            /* 隐藏所有控件 */
-            controls: none !important;
-            /* 禁止视频被点击显示控件 */
-            pointer-events: none;
-        }
+        /* ✅ 核心修改2：移除全局媒体控件样式（已不需要） */
 
         @media (max-width: 768px) {
             .main {
@@ -379,36 +351,24 @@
             .right-door { grid-row: 4 / 5; }
             footer { grid-column: 1 / 2; }
             .icon-group { justify-content: center; }
-            .music-btn {
-                top: 10px;
-                right: 10px;
-                width: 40px;
-                height: 40px;
-            }
         }
     </style>
 </head>
 <body>
 
-<!-- ✅ 致命修复：完整闭合 audio 标签！！！ -->
+<!-- ✅ 保留点击音效，移除音乐按钮相关逻辑 -->
 <audio id="clickAudio" preload="auto">
     <source src="./static/audio/click.mp3" type="audio/mpeg">
 </audio>
-<audio id="bgMusic" loop preload="auto">
+<!-- ✅ 背景音乐自动播放，无需手动控制 -->
+<audio id="bgMusic" loop preload="auto" autoplay>
     <source src="./static/audio/bg.mp3" type="audio/mpeg">
 </audio>
 
-<div class="music-btn glass" id="musicBtn">
-    <svg viewBox="0 0 1024 1024" width="70%" height="70%" fill="#ffffff">
-        <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path>
-        <path d="M416 320l256-96v576l-256-96z" id="musicIconPlay"></path>
-        <path d="M384 384h64v256h-64zM576 384h64v256h-64z" id="musicIconPause" style="display:none"></path>
-    </svg>
-</div>
+<!-- ✅ 核心修改3：完全删除音乐按钮的HTML代码 -->
 
-<!-- ✅ 核心修改3：给video标签添加controls="false" 并加强muted属性 -->
 <div class="video-bg">
-    <video src="./static/img/nafuditi.mp4" autoplay muted="muted" loop playsinline controls="false"></video>
+    <video src="./static/img/nafuditi.mp4" autoplay muted loop playsinline></video>
 </div>
 
 <div class="main">
@@ -433,14 +393,15 @@
         <div class="tree-title">📈 发展历程</div>
         <div class="tree-scroll-container">
             <div class="tree-list">
-                <div class="tree-item">2026 年 | 创建个人专属主页</div>
-                <div class="tree-item">2026 年 | 绑定独立域名 bw666.cc</div>
-                <div class="tree-item">2026 年 | 完成毛玻璃风格重构</div>
-                <div class="tree-item">2026 年 | 新增滚动历程树功能</div>
-                <div class="tree-item">2026 年 | 时钟移至左下角独立卡片</div>
-                <div class="tree-item">2026 年 | 支持视频动态背景</div>
-                <div class="tree-item">2026 年 | 新增点击音效+背景音乐</div>
-                <div class="tree-item">持续更新中...</div>
+                    <div class="tree-item">2023 年10月 | 创建一夜网</div>
+                    <div class="tree-item">2023 年12月| 一夜影视站上线</div>
+                    <div class="tree-item">2024 年 2月 | 盈利方向被迫向TG进行转移，同时上线了供需频道</div>
+                    <div class="tree-item">2024 年 8月 | 接到第一条广告，正式开始盈利</div>
+                    <div class="tree-item">2024 年 3月 | 小说站影视站关闭，停止运营，同时，一夜互推正式上线</div>
+                    <div class="tree-item">2024 年 8月 | 一夜网商城上线</div>
+                    <div class="tree-item">2025 年 1月 | 全球交流群组被迫下线</div>
+                    <div class="tree-item">2025 年 9月| fapian_bot正式上线</div>
+                    <div class="tree-item">2026 年 2月| 娱乐信息网内测开启</div>
             </div>
         </div>
     </div>
@@ -463,42 +424,17 @@
 </div>
 
 <script>
-    let isMusicPlaying = false;
     const clickAudio = document.getElementById('clickAudio');
     const bgMusic = document.getElementById('bgMusic');
-    const musicBtn = document.getElementById('musicBtn');
-    const iconPlay = document.getElementById('musicIconPlay');
-    const iconPause = document.getElementById('musicIconPause');
 
-    // ✅ 全局点击音效：点击任意位置播放，排除音乐按钮
+    // ✅ 保留全局点击音效
     document.addEventListener('click', function(e) {
-        if (musicBtn.contains(e.target)) return;
         try {
             clickAudio.volume = 0.5;
             clickAudio.currentTime = 0;
             clickAudio.play();
         } catch (e) {}
     });
-
-    // ✅ 背景音乐控制
-    musicBtn.onclick = function() {
-        try {
-            if (isMusicPlaying) {
-                bgMusic.pause();
-                isMusicPlaying = false;
-                iconPlay.style.display = 'block';
-                iconPause.style.display = 'none';
-            } else {
-                bgMusic.volume = 0.3;
-                bgMusic.play();
-                isMusicPlaying = true;
-                iconPlay.style.display = 'none';
-                iconPause.style.display = 'block';
-            }
-        } catch(e) {
-            alert('请先点击页面激活音频');
-        }
-    };
 
     // ✅ 时钟功能
     function updateTime() {
@@ -511,20 +447,15 @@
     setInterval(updateTime, 1000);
     updateTime();
 
-    // ✅ 激活浏览器音频权限
-    document.addEventListener('click', function() {
-        clickAudio.load();
-        bgMusic.load();
-    }, { once: true });
-
-    // ✅ 核心修改4：页面加载后强制隐藏视频控件（终极兜底）
+    // ✅ 页面加载后自动播放背景音乐（兼容浏览器权限）
     window.onload = function() {
-        const video = document.querySelector('.video-bg video');
-        // 移除所有控件相关属性
-        video.removeAttribute('controls');
-        // 禁止视频交互
-        video.style.pointerEvents = 'none';
-        video.style.userSelect = 'none';
+        // 激活音频上下文
+        document.addEventListener('click', function() {
+            try {
+                bgMusic.volume = 0.3;
+                bgMusic.play();
+            } catch (e) {}
+        }, { once: true });
     };
 </script>
 </body>
