@@ -26,6 +26,18 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            /* ✅ 核心修改1：隐藏视频自带的音量控制按钮 */
+            volume: hidden;
+            /* 兼容不同浏览器的视频控件隐藏 */
+            ::-webkit-media-controls-volume-slider {
+                display: none !important;
+            }
+            ::-webkit-media-controls-mute-button {
+                display: none !important;
+            }
+            ::-webkit-media-controls {
+                display: none !important;
+            }
         }
 
         body::before {
@@ -344,6 +356,16 @@
             color: transparent;
         }
 
+        /* ✅ 核心修改2：全局隐藏所有媒体控件（兜底方案） */
+        audio, video {
+            -webkit-appearance: none;
+            appearance: none;
+            /* 隐藏所有控件 */
+            controls: none !important;
+            /* 禁止视频被点击显示控件 */
+            pointer-events: none;
+        }
+
         @media (max-width: 768px) {
             .main {
                 grid-template-columns: 1fr;
@@ -368,13 +390,13 @@
 </head>
 <body>
 
+<!-- ✅ 致命修复：完整闭合 audio 标签！！！ -->
 <audio id="clickAudio" preload="auto">
     <source src="./static/audio/click.mp3" type="audio/mpeg">
-
-
+</audio>
 <audio id="bgMusic" loop preload="auto">
     <source src="./static/audio/bg.mp3" type="audio/mpeg">
-
+</audio>
 
 <div class="music-btn glass" id="musicBtn">
     <svg viewBox="0 0 1024 1024" width="70%" height="70%" fill="#ffffff">
@@ -384,8 +406,9 @@
     </svg>
 </div>
 
+<!-- ✅ 核心修改3：给video标签添加controls="false" 并加强muted属性 -->
 <div class="video-bg">
-    <video src="./static/img/nafuditi.mp4" autoplay muted loop playsinline></video>
+    <video src="./static/img/nafuditi.mp4" autoplay muted="muted" loop playsinline controls="false"></video>
 </div>
 
 <div class="main">
@@ -447,11 +470,9 @@
     const iconPlay = document.getElementById('musicIconPlay');
     const iconPause = document.getElementById('musicIconPause');
 
-    // 全局点击播放音效
+    // ✅ 全局点击音效：点击任意位置播放，排除音乐按钮
     document.addEventListener('click', function(e) {
-        // 点击音乐按钮不播放点击音效
         if (musicBtn.contains(e.target)) return;
-        
         try {
             clickAudio.volume = 0.5;
             clickAudio.currentTime = 0;
@@ -459,7 +480,7 @@
         } catch (e) {}
     });
 
-    // 背景音乐开关
+    // ✅ 背景音乐控制
     musicBtn.onclick = function() {
         try {
             if (isMusicPlaying) {
@@ -479,7 +500,7 @@
         }
     };
 
-    // 时钟
+    // ✅ 时钟功能
     function updateTime() {
         const d = new Date();
         const h = String(d.getHours()).padStart(2, '0');
@@ -490,11 +511,21 @@
     setInterval(updateTime, 1000);
     updateTime();
 
-    // 激活音频
+    // ✅ 激活浏览器音频权限
     document.addEventListener('click', function() {
         clickAudio.load();
         bgMusic.load();
     }, { once: true });
+
+    // ✅ 核心修改4：页面加载后强制隐藏视频控件（终极兜底）
+    window.onload = function() {
+        const video = document.querySelector('.video-bg video');
+        // 移除所有控件相关属性
+        video.removeAttribute('controls');
+        // 禁止视频交互
+        video.style.pointerEvents = 'none';
+        video.style.userSelect = 'none';
+    };
 </script>
 </body>
 </html>
